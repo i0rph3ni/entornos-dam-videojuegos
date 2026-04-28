@@ -1,0 +1,80 @@
+{
+	"info": {
+		"name": "API Gestor Videojuegos DAM",
+		"description": "Colección de pruebas para la API del proyecto de Entornos de Desarrollo.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{ "key": "Content-Type", "value": "application/json" }
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"usuario\": \"admin\",\n    \"password\": \"1234\"\n}"
+				},
+				"url": { "raw": "http://localhost:3000/login", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["login"] }
+			}
+		},
+		{
+			"name": "Estudios - Obtener todos",
+			"request": { "method": "GET", "url": { "raw": "http://localhost:3000/estudios", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["estudios"] } }
+		},
+		{
+			"name": "Estudios - Crear",
+			"request": {
+				"method": "POST",
+				"header": [ { "key": "Content-Type", "value": "application/json" } ],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Capcom\",\n    \"pais\": \"Japón\"\n}"
+				},
+				"url": { "raw": "http://localhost:3000/estudios", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["estudios"] }
+			}
+		},
+		{
+			"name": "Estudios - Editar",
+			"request": {
+				"method": "PUT",
+				"header": [ { "key": "Content-Type", "value": "application/json" } ],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nombre\": \"Capcom Editado\",\n    \"pais\": \"Japón\"\n}"
+				},
+				"url": { "raw": "http://localhost:3000/estudios/1", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["estudios", "1"] }
+			}
+		},
+		{
+			"name": "Estudios - Borrar",
+			"request": { "method": "DELETE", "url": { "raw": "http://localhost:3000/estudios/1", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["estudios", "1"] } }
+		},
+		{
+			"name": "Videojuegos - Obtener todos",
+			"request": { "method": "GET", "url": { "raw": "http://localhost:3000/videojuegos", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["videojuegos"] } }
+		},
+		{
+			"name": "Videojuegos - Crear (Sin foto)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{ "key": "titulo", "value": "Resident Evil", "type": "text" },
+						{ "key": "anio", "value": "1996", "type": "text" },
+						{ "key": "genero", "value": "Horror", "type": "text" },
+						{ "key": "estudio_id", "value": "1", "type": "text" }
+					]
+				},
+				"url": { "raw": "http://localhost:3000/videojuegos", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["videojuegos"] }
+			}
+		},
+		{
+			"name": "Videojuegos - Borrar",
+			"request": { "method": "DELETE", "url": { "raw": "http://localhost:3000/videojuegos/1", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["videojuegos", "1"] } }
+		}
+	]
+}
