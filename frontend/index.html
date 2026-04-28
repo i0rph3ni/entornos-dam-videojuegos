@@ -17,7 +17,6 @@
                     </div>
                     <div class="card-body">
                         <div v-if="errorLogin" class="alert alert-danger">{{ errorLogin }}</div>
-                        
                         <div class="mb-3">
                             <label class="form-label">Usuario</label>
                             <input v-model="loginUsuario" type="text" class="form-control" placeholder="ej: admin">
@@ -84,34 +83,40 @@
                 <div class="card-header bg-primary text-white">Gestión de Videojuegos</div>
                 <div class="card-body">
                     <div v-if="errorVideojuego" class="alert alert-danger">{{ errorVideojuego }}</div>
+                    
                     <div class="row mb-3">
-                        <div class="col">
-                            <input v-model="formVideojuego.titulo" type="text" class="form-control" placeholder="Título del juego">
+                        <div class="col-2">
+                            <input v-model="formVideojuego.titulo" type="text" class="form-control" placeholder="Título">
                         </div>
-                        <div class="col">
+                        <div class="col-2">
                             <input v-model="formVideojuego.anio" type="number" class="form-control" placeholder="Año">
                         </div>
-                        <div class="col">
+                        <div class="col-2">
                             <input v-model="formVideojuego.genero" type="text" class="form-control" placeholder="Género">
                         </div>
-                        <div class="col">
+                        <div class="col-2">
                             <select v-model="formVideojuego.estudio_id" class="form-select">
-                                <option value="">Selecciona un estudio...</option>
+                                <option value="">Estudio...</option>
                                 <option v-for="estudio in listaEstudios" :value="estudio.id">
                                     {{ estudio.nombre }}
                                 </option>
                             </select>
                         </div>
-                        <div class="col-auto">
-                            <button @click="guardarVideojuego" class="btn btn-success">
-                                {{ formVideojuego.id ? 'Actualizar' : 'Añadir' }}
+                        <div class="col-3">
+                            <input type="file" id="fotoJuego" @change="seleccionarImagen" class="form-control" accept="image/*">
+                        </div>
+                        <div class="col-1">
+                            <button @click="guardarVideojuego" class="btn btn-success w-100">
+                                {{ formVideojuego.id ? 'OK' : '+' }}
                             </button>
-                            <button v-if="formVideojuego.id" @click="cancelarEdicionVideojuego" class="btn btn-secondary ms-2">Cancelar</button>
                         </div>
                     </div>
-                    <table class="table table-hover">
+                    <button v-if="formVideojuego.id" @click="cancelarEdicionVideojuego" class="btn btn-secondary mb-3">Cancelar Edición</button>
+
+                    <table class="table table-hover align-middle">
                         <thead>
                             <tr>
+                                <th>Carátula</th>
                                 <th>ID</th>
                                 <th>Título</th>
                                 <th>Año</th>
@@ -122,6 +127,10 @@
                         </thead>
                         <tbody>
                             <tr v-for="juego in listaVideojuegos" :key="juego.id">
+                                <td>
+                                    <img v-if="juego.imagen" :src="'http://localhost:3000/uploads/' + juego.imagen" alt="foto" width="50" style="border-radius: 5px;">
+                                    <span v-else class="badge bg-secondary">Sin foto</span>
+                                </td>
                                 <td>{{ juego.id }}</td>
                                 <td>{{ juego.titulo }}</td>
                                 <td>{{ juego.anio }}</td>

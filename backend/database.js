@@ -18,22 +18,22 @@ db.serialize(() => {
         pais TEXT
     )`);
 
+    // añadida la columna imagen
     db.run(`CREATE TABLE IF NOT EXISTS videojuegos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         titulo TEXT NOT NULL,
         anio INTEGER,
         genero TEXT,
         estudio_id INTEGER,
+        imagen TEXT,
         FOREIGN KEY (estudio_id) REFERENCES estudios(id)
     )`);
 
-    // tabla para el login
     db.run(`CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         usuario TEXT UNIQUE,
         password TEXT
     )`, () => {
-        // creamos un usuario admin por defecto para poder entrar (pass: 1234)
         db.get("SELECT * FROM usuarios WHERE usuario = 'admin'", (err, row) => {
             if (!row) {
                 db.run("INSERT INTO usuarios (usuario, password) VALUES ('admin', '1234')");
