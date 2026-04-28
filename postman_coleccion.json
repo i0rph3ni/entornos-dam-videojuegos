@@ -24,13 +24,17 @@
 			"request": { "method": "GET", "url": { "raw": "http://localhost:3000/estudios", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["estudios"] } }
 		},
 		{
-			"name": "Estudios - Crear",
+			"name": "Estudios - Crear (Con logo opcional)",
 			"request": {
 				"method": "POST",
-				"header": [ { "key": "Content-Type", "value": "application/json" } ],
+				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"nombre\": \"Capcom\",\n    \"pais\": \"Japón\"\n}"
+					"mode": "formdata",
+					"formdata": [
+						{ "key": "nombre", "value": "Nintendo", "type": "text" },
+						{ "key": "pais", "value": "Japón", "type": "text" },
+						{ "key": "logo", "value": [], "type": "file", "description": "Selecciona un archivo visualmente en Postman" }
+					]
 				},
 				"url": { "raw": "http://localhost:3000/estudios", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["estudios"] }
 			}
@@ -39,10 +43,14 @@
 			"name": "Estudios - Editar",
 			"request": {
 				"method": "PUT",
-				"header": [ { "key": "Content-Type", "value": "application/json" } ],
+				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"nombre\": \"Capcom Editado\",\n    \"pais\": \"Japón\"\n}"
+					"mode": "formdata",
+					"formdata": [
+						{ "key": "nombre", "value": "Nintendo Editado", "type": "text" },
+						{ "key": "pais", "value": "Japón", "type": "text" },
+						{ "key": "logo", "value": [], "type": "file" }
+					]
 				},
 				"url": { "raw": "http://localhost:3000/estudios/1", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["estudios", "1"] }
 			}
@@ -56,17 +64,18 @@
 			"request": { "method": "GET", "url": { "raw": "http://localhost:3000/videojuegos", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["videojuegos"] } }
 		},
 		{
-			"name": "Videojuegos - Crear (Sin foto)",
+			"name": "Videojuegos - Crear (Con foto)",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
-						{ "key": "titulo", "value": "Resident Evil", "type": "text" },
-						{ "key": "anio", "value": "1996", "type": "text" },
-						{ "key": "genero", "value": "Horror", "type": "text" },
-						{ "key": "estudio_id", "value": "1", "type": "text" }
+						{ "key": "titulo", "value": "Mario Odyssey", "type": "text" },
+						{ "key": "anio", "value": "2017", "type": "text" },
+						{ "key": "genero", "value": "Plataformas", "type": "text" },
+						{ "key": "estudio_id", "value": "1", "type": "text" },
+						{ "key": "imagen", "value": [], "type": "file" }
 					]
 				},
 				"url": { "raw": "http://localhost:3000/videojuegos", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["videojuegos"] }
