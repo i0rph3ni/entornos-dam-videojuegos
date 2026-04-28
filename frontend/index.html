@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor Videojuegos</title>
+    <title>Gestor Videojuegos DAM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -41,12 +41,16 @@
                 <div class="card-header bg-dark text-white">Gestión de Estudios</div>
                 <div class="card-body">
                     <div v-if="errorEstudio" class="alert alert-danger">{{ errorEstudio }}</div>
+                    
                     <div class="row mb-3">
                         <div class="col">
-                            <input v-model="formEstudio.nombre" type="text" class="form-control" placeholder="Nombre del estudio">
+                            <input v-model="formEstudio.nombre" type="text" class="form-control" placeholder="Nombre">
                         </div>
                         <div class="col">
                             <input v-model="formEstudio.pais" type="text" class="form-control" placeholder="País">
+                        </div>
+                        <div class="col-4">
+                            <input type="file" id="logoEstudio" @change="seleccionarLogo" class="form-control" accept="image/*">
                         </div>
                         <div class="col-auto">
                             <button @click="guardarEstudio" class="btn btn-success">
@@ -55,9 +59,11 @@
                             <button v-if="formEstudio.id" @click="cancelarEdicionEstudio" class="btn btn-secondary ms-2">Cancelar</button>
                         </div>
                     </div>
-                    <table class="table table-hover">
+
+                    <table class="table table-hover align-middle">
                         <thead>
                             <tr>
+                                <th>Logo</th>
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>País</th>
@@ -66,6 +72,10 @@
                         </thead>
                         <tbody>
                             <tr v-for="estudio in listaEstudios" :key="estudio.id">
+                                <td>
+                                    <img v-if="estudio.logo" :src="'http://localhost:3000/uploads/' + estudio.logo" alt="logo" width="40" style="border-radius: 5px;">
+                                    <span v-else class="badge bg-secondary">Sin logo</span>
+                                </td>
                                 <td>{{ estudio.id }}</td>
                                 <td>{{ estudio.nombre }}</td>
                                 <td>{{ estudio.pais }}</td>
