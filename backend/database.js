@@ -7,18 +7,19 @@ const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('error al conectar db:', err.message);
     } else {
-        console.log('conectado a sqlite');
+        console.log('conectado a sqlite ok');
     }
 });
 
 db.serialize(() => {
+    // añadida columna logo a estudios
     db.run(`CREATE TABLE IF NOT EXISTS estudios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL,
-        pais TEXT
+        pais TEXT,
+        logo TEXT
     )`);
 
-    // añadida la columna imagen
     db.run(`CREATE TABLE IF NOT EXISTS videojuegos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         titulo TEXT NOT NULL,

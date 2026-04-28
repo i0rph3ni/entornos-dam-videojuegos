@@ -9,10 +9,10 @@ const app = Vue.createApp({
             listaEstudios: [],
             listaVideojuegos: [],
             
-            formEstudio: { id: null, nombre: '', pais: '' },
+            // añadida variable archivoLogo
+            formEstudio: { id: null, nombre: '', pais: '', archivoLogo: null },
             errorEstudio: '',
 
-            // añadimos la variable archivoImagen para guardar la foto antes de enviarla
             formVideojuego: { id: null, titulo: '', anio: '', genero: '', estudio_id: '', archivoImagen: null },
             errorVideojuego: ''
         }
@@ -52,6 +52,11 @@ const app = Vue.createApp({
             const respuesta = await fetch('http://localhost:3000/estudios');
             this.listaEstudios = await respuesta.json();
         },
+
+        // pillar archivo del logo
+        seleccionarLogo(event) {
+            this.formEstudio.archivoLogo = event.target.files[0];
+        },
         
         async guardarEstudio() {
             this.errorEstudio = '';
@@ -59,17 +64,27 @@ const app = Vue.createApp({
                 this.errorEstudio = 'el nombre del estudio es obligatorio';
                 return;
             }
+
+            // usamos FormData para enviar el logo
+            const formData = new FormData();
+            formData.append('nombre', this.formEstudio.nombre);
+            formData.append('pais', this.formEstudio.pais);
+            
+            if (this.formEstudio.archivoLogo) {
+                formData.append('logo', this.formEstudio.archivoLogo);
+            }
+
             if (this.formEstudio.id) {
+                // actualizar
                 await fetch('http://localhost:3000/estudios/' + this.formEstudio.id, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(this.formEstudio)
+                    body: formData
                 });
             } else {
+                // crear
                 await fetch('http://localhost:3000/estudios', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(this.formEstudio)
+                    body: formData
                 });
             }
             this.cancelarEdicionEstudio();
@@ -80,13 +95,18 @@ const app = Vue.createApp({
             this.formEstudio.id = estudio.id;
             this.formEstudio.nombre = estudio.nombre;
             this.formEstudio.pais = estudio.pais;
+            // archivoLogo no se puede cargar por seguridad
         },
         
         cancelarEdicionEstudio() {
             this.formEstudio.id = null;
             this.formEstudio.nombre = '';
             this.formEstudio.pais = '';
+            this.formEstudio.archivoLogo = null;
             this.errorEstudio = '';
+            // limpiar input visualmente
+            const inputLogo = document.getElementById('logoEstudio');
+            if(inputLogo) inputLogo.value = '';
         },
         
         async borrarEstudio(id) {
@@ -102,7 +122,6 @@ const app = Vue.createApp({
             this.listaVideojuegos = await respuesta.json();
         },
 
-        // pillamos el archivo cuando el usuario lo selecciona
         seleccionarImagen(event) {
             this.formVideojuego.archivoImagen = event.target.files[0];
         },
@@ -114,32 +133,26 @@ const app = Vue.createApp({
                 return;
             }
 
-            // como enviamos un archivo, usamos FormData en vez de JSON
             const formData = new FormData();
             formData.append('titulo', this.formVideojuego.titulo);
             formData.append('anio', this.formVideojuego.anio);
             formData.append('genero', this.formVideojuego.genero);
             formData.append('estudio_id', this.formVideojuego.estudio_id);
-            
-            // si hay foto seleccionada, la metemos al paquete
             if (this.formVideojuego.archivoImagen) {
                 formData.append('imagen', this.formVideojuego.archivoImagen);
             }
 
             if (this.formVideojuego.id) {
-                // actualizar
                 await fetch('http://localhost:3000/videojuegos/' + this.formVideojuego.id, {
                     method: 'PUT',
-                    body: formData // ya no hace falta poner headers de content-type con formData
+                    body: formData
                 });
             } else {
-                // crear
                 await fetch('http://localhost:3000/videojuegos', {
                     method: 'POST',
                     body: formData
                 });
             }
-
             this.cancelarEdicionVideojuego();
             this.cargarVideojuegos();
         },
@@ -150,7 +163,6 @@ const app = Vue.createApp({
             this.formVideojuego.anio = juego.anio;
             this.formVideojuego.genero = juego.genero;
             this.formVideojuego.estudio_id = juego.estudio_id;
-            // la imagen no se carga en el input file por seguridad de los navegadores web
         },
 
         cancelarEdicionVideojuego() {
@@ -161,8 +173,6 @@ const app = Vue.createApp({
             this.formVideojuego.estudio_id = '';
             this.formVideojuego.archivoImagen = null;
             this.errorVideojuego = '';
-            
-            // vaciamos el input de la foto visualmente
             const inputFoto = document.getElementById('fotoJuego');
             if(inputFoto) inputFoto.value = '';
         },
